@@ -44,7 +44,7 @@ jobs:
         run: |
           sonar-scanner -X\
             -Dsonar.projectKey=PrilexYMCA_Laba5 \
-            -Dsonar.organization=prilexymca52 \
+            -Dsonar.organization=PrilexYMCA \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.sources=.
 
