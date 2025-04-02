@@ -43,7 +43,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           sonar-scanner -X\
-            -Dsonar.projectKey=PrilexYMCA_Laba5 \
-            -Dsonar.organization=PrilexYMCA \
+            -Dsonar.projectKey=your_correct_project_key \
+            -Dsonar.organization=your_correct_organization \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.sources=.
+
