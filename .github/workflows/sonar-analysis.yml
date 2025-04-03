@@ -28,7 +28,7 @@ jobs:
           sudo apt update
           sudo apt install -y build-essential cmake
           mkdir build && cd build
-          cmake ..
+          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
           make
 
       - name: Install SonarScanner
@@ -46,5 +46,5 @@ jobs:
             -Dsonar.projectKey=PrilexYMCA_Laba5 \
             -Dsonar.organization=prilexymca52 \
             -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.sources=.
-
+            -Dsonar.sources=. \
+            -Dsonar.cfamily.compile-commands=build/compile_commands.json
