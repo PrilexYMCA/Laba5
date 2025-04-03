@@ -40,7 +40,7 @@ jobs:
 
       - name: Run SonarQube Scan
         env:
-          SONAR_TOKEN: prilexymca52
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           sonar-scanner -X\
             -Dsonar.projectKey=PrilexYMCA_Laba5 \
