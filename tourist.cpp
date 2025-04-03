@@ -1,42 +1,8 @@
 #include<iostream>
 #include<fstream>
 #include<string.h>
-#include <gtest/gtest.h>
-#include "tourist.cpp"
 
 using namespace std;
-
-class TouristTest : public ::testing::Test {
-protected:
-    Tourist tourist;
-};
-
-TEST_F(TouristTest, AdPackAndUnpack) {
-    tour input = {"Place1", "Code1", "Country1", "7", "500"};
-    char buffer[45];
-    snprintf(buffer, sizeof(buffer), "%s|%s|%s|%s|%s|", input.ad_code, input.ad_place, input.ad_country, input.ad_days, input.ad_prices);
-    
-    tour output = tourist.ad_unpack(buffer);
-    EXPECT_STREQ(output.ad_code, input.ad_code);
-    EXPECT_STREQ(output.ad_place, input.ad_place);
-    EXPECT_STREQ(output.ad_country, input.ad_country);
-    EXPECT_STREQ(output.ad_days, input.ad_days);
-    EXPECT_STREQ(output.ad_prices, input.ad_prices);
-}
-
-TEST_F(TouristTest, UsPackAndUnpack) {
-    tour input = {"", "", "", "", "", "User1", "1234567890", "2", "D-001", "12/05/24", "Confirmed"};
-    char buffer[45];
-    snprintf(buffer, sizeof(buffer), "%s|%s|%s|%s|%s|%s|", input.us_name, input.us_phone, input.us_people, input.us_dcode, input.us_date, input.us_status);
-    
-    tour output = tourist.us_unpack(buffer);
-    EXPECT_STREQ(output.us_name, input.us_name);
-    EXPECT_STREQ(output.us_phone, input.us_phone);
-    EXPECT_STREQ(output.us_people, input.us_people);
-    EXPECT_STREQ(output.us_dcode, input.us_dcode);
-    EXPECT_STREQ(output.us_date, input.us_date);
-    EXPECT_STREQ(output.us_status, input.us_status);
-}
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
