@@ -10,7 +10,7 @@ char userf[20]="Reservation.txt";
 struct tour{
  	char ad_place[20],ad_code[20],ad_country[20],ad_days[20],ad_prices[20];
  	char us_phone[20],us_name[20],us_people[20],us_date[20],us_status[20],us_dcode[20];
-};
+}; 
 
 class Tourist{
              public:
