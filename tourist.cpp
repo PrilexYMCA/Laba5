@@ -28,21 +28,29 @@ class Tourist{
 };
 
 // ADMIN PANEL
-void Tourist::ad_pack(tour r){
-    fstream fp;
-    fp.open(adminf, ios::out | ios::app);
-    if (!fp) {
-        cout << "\nCannot open file";
-        exit(0);
-    }
-
-    char buff[45];
-    snprintf(buff, sizeof(buff), "%s|%s|%s|%s|%s|", r.ad_code, r.ad_place, r.ad_country, r.ad_days, r.ad_prices);
-    
-    fp << buff << endl;
-    fp.close();
+void Tourist ::ad_pack(tour r){
+     fstream fp;
+     fp.open(adminf,ios::out|ios::app);
+     if(!fp){
+		cout<<"\nCannot open file";
+		exit(0);
+     }
+     char buff[45];
+     strcpy(buff,r.ad_code);
+     strcat(buff,"|");
+     strcat(buff,r.ad_place);
+     strcat(buff,"|");
+     strcat(buff,r.ad_country);
+     strcat(buff,"|");
+     strcat(buff,r.ad_days);
+     strcat(buff,"|");
+     strcat(buff,r.ad_prices);
+     strcat(buff,"|");
+     for(int i=0;i<45-strlen(buff);i++)
+            strcat(buff,"|");
+     fp<<buff<<endl;
+     fp.close();
 }
-
 
 tour Tourist::ad_unpack(char buff[]){
 	tour r;
@@ -113,92 +121,101 @@ void Tourist::ad_display(){
 }
 
 
-void Tourist::ad_modify() {
+void Tourist ::ad_modify(){
     fstream fp;
-    char ad_code[15], buff[45];
-    int j, ch;
+    char ad_code[15],buff[45];
+    int i,j,ch;
     tour s[100];
-    
-    fp.open(adminf, ios::in);
-    if (!fp) {
-        cout << "\nCannot open file";
-        exit(0);
+    fp.open(adminf,ios::in);
+    if(!fp){
+		cout<<"\nCannot open file";
+		exit(0);
     }
-    
-    cout << "\nENTER THE DESTINATION CODE TO BE MODIFIED: ";
-    cin >> ad_code;
-    int i = 0;
-    while (fp.getline(buff, 45)) {
-        s[i++] = ad_unpack(buff);
+    cout<<"\nENTER THE DESTINATION CODE TO BE MODIFIED: ";
+    cin>>ad_code;
+    i=0;
+   	while(1){
+        fp.getline(buff,45);
+        if(fp.eof())break;
+        s[i]=ad_unpack(buff);
+        i++;
     }
-    fp.close();
-
-    for (j = 0; j < i; j++) {
-        if (strcmp(s[j].ad_code, ad_code) == 0) {
-            cout << "\nVALUES OF THE TRIP\n";
-            cout << "\nDestination Code: " << s[j].ad_code;
-            cout << "\nDestination Place: " << s[j].ad_place;
-            cout << "\nDestination Country: " << s[j].ad_country;
-            cout << "\nNo of days of Trip: " << s[j].ad_days;
-            cout << "\nTotal Cost of the Trip: " << s[j].ad_prices;
-            cout << "\nWhat do you want to update?";
-            cout << "\n1. Destination Place and Country";
-            cout << "\n2. Number of Days";
-            cout << "\n3. Cost of the Trip";
-            cout << "\nChoice: ";
-            cin >> ch;
-            
-            switch (ch) {
+   	for(j=0;j<i;j++){
+       		if(strcmp(s[j].ad_code,ad_code)==0){
+                    cout<<"VALUES OF THE TRIP\n";
+                    cout<<"\nDestination Code: "<<s[j].ad_code;
+                    cout<<"\nDestination Place: "<<s[j].ad_place;
+                    cout<<"\nDestination Country: "<<s[j].ad_country;
+                    cout<<"\nNo of days of Trip: "<<s[j].ad_days;
+                    cout<<"\nTotal Cost of the Trip: "<<s[j].ad_prices;
+                    cout<<"\nWhat you want to Update: ";
+	  		cout<<"\n\n\t\tEnter 1 for changing DESTINATION PLACE\n";
+	  		cout<<"\t\tEnter 2 for changing DAYS OF THE TRIP\n";
+	  		cout<<"\t\tEnter 3 for changing COST OF THE TRIP\n";
+	  		cout<<"\t\t\t";
+	  		cin>>ch;
+	  		switch(ch){
                 case 1:
-                    cout << "New Destination Place: ";
-                    cin >> s[j].ad_place;
-                    cout << "New Destination Country: ";
-                    cin >> s[j].ad_country;
+                    cout<<"Destination Place: ";
+                    cin>>s[j].ad_place;
+                    cout<<"Destination Country: ";
+                    cin>>s[j].ad_country;
                     break;
                 case 2:
-                    cout << "New Number of Days: ";
-                    cin >> s[j].ad_days;
+                    cout<<"No of days of Trip: ";
+                    cin>>s[j].ad_days;
                     break;
                 case 3:
-                    cout << "New Cost of the Trip: ";
-                    cin >> s[j].ad_prices;
+                    cout<<"Total Cost of the Trip: ";
+                    cin>>s[j].ad_prices;
+                    break;
+	  		}
                     break;
             }
-            break;
-        }
     }
-    if (j == i) {
-        cout << "\nTRIP NOT FOUND";
+   	if(j==i){
+        cout<<"\n TRIP NOT FOUND";
         return;
     }
-    
+    fp.close();
     fstream fd;
-    fd.open(adminf, ios::out | ios::trunc);
-    if (!fd) {
-        cout << "\nFile Not Found";
+    fd.open(adminf,ios::out|ios::trunc);
+    if(!fd){
+        cout<<"\nFile Not Found";
         exit(0);
     }
-    for (j = 0; j < i; j++)
-        ad_pack(s[j]);
-    fd.close();
+   	for(j=0;j<i;j++)
+         ad_pack(s[j]);
+   	fd.close();
 }
-
 
 
 // USER PANEL
 
 
-void Tourist::us_pack(tour r) {
+void Tourist ::us_pack(tour r){
     fstream fp;
-    fp.open(userf, ios::out | ios::app);
-    if (!fp) {
-        cout << "\nFile Not Found";
-        exit(0);
+    fp.open(userf,ios::out|ios::app);
+    if(!fp){
+        cout<<"\nFile Not Found";
+		exit(0);
     }
-
     char buff[45];
-    snprintf(buff, sizeof(buff), "%s|%s|%s|%s|%s|%s|", r.us_name, r.us_phone, r.us_people, r.us_dcode, r.us_date, r.us_status);
-    fp << buff << endl;
+    strcpy(buff,r.us_name);
+    strcat(buff,"|");
+    strcat(buff,r.us_phone);
+    strcat(buff,"|");
+    strcat(buff,r.us_people);
+    strcat(buff,"|");
+    strcat(buff,r.us_dcode);
+    strcat(buff,"|");
+    strcat(buff,r.us_date);
+    strcat(buff,"|");
+    strcat(buff,r.us_status);
+    strcat(buff,"|");
+    for(int i=0;i<45-strlen(buff);i++)
+     	strcat(buff,"|");
+    fp<<buff<<endl;
     fp.close();
 }
 
@@ -277,47 +294,60 @@ void Tourist::us_display(){
 }
 
 
-void Tourist::us_modify() {
+void Tourist ::us_modify(){
     fstream fp;
-    char us_name[15], buff[45];
-    int j;
+    char us_name[15],buff[45];
+    int i,j;
     tour s[100];
-    
-    fp.open(userf, ios::in);
-    if (!fp) {
-        cout << "\nFile Not Found";
-        exit(0);
+    fp.open(userf,ios::in);
+    if(!fp){
+		cout<<"\nFile not Found";
+		exit(0);
     }
-    
-    cout << "\nEnter Your name to cancel your reservation: ";
-    cin >> us_name;
-    int i = 0;
-    while (fp.getline(buff, 45)) {
-        s[i++] = us_unpack(buff);
+    cout<<"\nEnter Your name to cancel  your reservation: ";
+    cin>>us_name;
+    i=0;
+   	while(1){
+        fp.getline(buff,45);
+        if(fp.eof())break;
+        s[i]=us_unpack(buff);
+        i++;
     }
-    fp.close();
-    
-    for (j = 0; j < i; j++) {
-        if (strcmp(s[j].us_name, us_name) == 0) {
-            cout << "\nReservation found. Enter 'Cancel' to cancel: ";
-            cin >> s[j].us_status;
+   	for(j=0;j<i;j++){
+        if(strcmp(s[j].us_name,us_name)==0){
+	  		cout<<"\nYour Reservation Details are:\n";
+	  		cout<<"\nName: "<<s[j].us_name;
+	  		cout<<"\nContact No.: "<<s[j].us_phone;
+	  		cout<<"\nNo.of People: "<<s[j].us_people;
+	  		cout<<"\nDestination: "<<s[j].us_dcode;
+	  		cout<<"\nDate of Journey: "<<s[j].us_date;
+	  		cout<<"\nStatus: "<<s[j].us_status;
+	  		cout<<"\n\nENTER 'Cancel' TO CANCEL YOUR TICKET: \n";
+	  		cin>>s[j].us_status;
+	  		cout<<"\nYour Reservation has been Cancelled\n";
+	  		cout<<"\n\nName: "<<s[j].us_name;
+	  		cout<<"\nContact No.: "<<s[j].us_phone;
+	  		cout<<"\nNo.of People: "<<s[j].us_people;
+	  		cout<<"\nDestination: "<<s[j].us_dcode;
+	  		cout<<"\nDate of Journey: "<<s[j].us_date;
+	  		cout<<"\nStatus: "<<s[j].us_status;
             break;
         }
     }
-    if (j == i) {
-        cout << "\nRECORD NOT FOUND";
+   	if(j==i){
+        cout<<"\nRECORD NOT FOUND";
         return;
     }
-    
+    fp.close();
     fstream fd;
-    fd.open(userf, ios::out | ios::trunc);
-    if (!fd) {
-        cout << "\nCannot open file";
+    fd.open(userf,ios::out|ios::trunc);
+    if(!fd){
+        cout<<"\nCannot open file";
         exit(0);
     }
-    for (j = 0; j < i; j++)
+   	for(j=0;j<i;j++)
         us_pack(s[j]);
-    fd.close();
+   	fd.close();
 }
 
 void Tourist::us_search(){
@@ -332,7 +362,7 @@ void Tourist::us_search(){
     }
     cout<<"\nENTER THE NAME TO BE SEARCHED: ";
     cin>>us_name;
-
+    i=0;
    	while(1){
         fp.getline(buff,45);
         if(fp.eof())break;
